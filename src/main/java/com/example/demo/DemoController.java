@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import java.time.Instant;
+
+import javax.validation.Valid;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +24,15 @@ public class DemoController {
     /*@ApiResponses(value = { @ApiResponse(description = "successful operation", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MyBody.class)) }) })*/
     @GetMapping(path = "second-path", produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity<MyBody> getSomething(@RequestParam("queryParam1") int x, @RequestParam("queryParam2") String y) {
-        return new HttpEntity<>(new MyBody(x, y));
+    public HttpEntity<MyBody> getSomething(@RequestParam("queryParam1") int anInt, @RequestParam("queryParam2") String aString, 
+            @RequestParam("queryParam3") Instant anInstant) {
+        return new HttpEntity<>(new MyBody(anInt, aString, anInstant));
     }
 
     @Operation(summary = "POST example", description = "This is an example of a POST request.", tags = {
             "post-example" })
     @PostMapping(path = "second-path", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity<MyBody> postSomething(@RequestBody MyBody body) {
+    public HttpEntity<MyBody> postSomething(@RequestBody @Valid MyBody body) {
         return new HttpEntity<>(body);
     }
 
